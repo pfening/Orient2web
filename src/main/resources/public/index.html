@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TITLE</title>  
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="ui-bootstrap-tpls-2.5.0.min.js"></script>
+<script>
+var app = angular.module('myApp', ["ui.bootstrap.modal"]);
+app.controller('customersCtrl', function($scope, $http) {
+    $http.get("http://localhost:4567/users").then(function (response) {$scope.lista = response.data;});
+
+    $scope.edit=function (ind) {        
+        var firstname=$scope.lista[ind].fname;
+        console.log(firstname);
+     };
+     
+$scope.open = function() {
+  $scope.showModal = true;
+};
+
+$scope.ok = function() {
+  $scope.showModal = false;
+};
+
+$scope.cancel = function() {
+  $scope.showModal = false;
+};
+});
+</script>
+<body>
+
+<div ng-app="myApp" ng-controller="customersCtrl">
+<button type="button" class="btn btn-default" ng-click="open()">Open me!</button>
+<table cellspacing="0" border="1">
+    <thead>
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>UID</th>
+            <th>Manager UID</th>
+            <th>Country</th>
+            <th>Record_status</th>
+            <th>Record_entered</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+  <tr ng-repeat="x in lista">
+    <td>{{x.fname}}</td>
+    <td>{{x.lname}}</td>
+    <td>{{x.uid}}</td>
+    <td>{{x.manager}}</td>
+    <td>{{x.country}}</td>
+    <td>{{x.Record_status}}</td>
+    <td>{{x.Record_entered}}</td>
+    <td><button ng-click="edit($index)">Edit</button></td>    
+  </tr>
+</table>
+    
+<modal id="showModal">
+    <div class="modal">
+        <div class="modal-body">
+            <h1>A Custom Modal!</h1>
+            <p>Home page text</p>          
+        </div>
+    </div>    
+</modal>
+    
+</div>
+
+
+
+</body>
+</html>
